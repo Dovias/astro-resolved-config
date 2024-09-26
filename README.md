@@ -1,4 +1,4 @@
-# astro-config
+# astro-runtime-config
 
 Astro integration that allows to retrieve astro configuration object at runtime.
 
