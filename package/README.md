@@ -1,27 +1,27 @@
-# `package-name`
+# astro-runtime-config
 
-This is an [Astro integration](https://docs.astro.build/en/guides/integrations-guide/) that TODO:description
+This is an [Astro integration](https://docs.astro.build/en/guides/integrations-guide/) that allows to retrieve astro configuration object at runtime
 
 ## Usage
 
 ### Prerequisites
 
-TODO:
+- Astro 4.14+
 
 ### Installation
 
 Install the integration **automatically** using the Astro CLI:
 
 ```bash
-pnpm astro add package-name
+pnpm astro add astro-runtime-config
 ```
 
 ```bash
-npx astro add package-name
+npx astro add astro-runtime-config
 ```
 
 ```bash
-yarn astro add package-name
+yarn astro add astro-runtime-config
 ```
 
 Or install it **manually**:
@@ -29,32 +29,28 @@ Or install it **manually**:
 1. Install the required dependencies
 
 ```bash
-pnpm add package-name
+pnpm add astro-runtime-config
 ```
 
 ```bash
-npm install package-name
+npm install astro-runtime-config
 ```
 
 ```bash
-yarn add package-name
+yarn add astro-runtime-config
 ```
 
 2. Add the integration to your astro config
 
 ```diff
-+import integration from "package-name";
++import astroRuntimeConfig from "astro-runtime-config";
 
 export default defineConfig({
   integrations: [
-+    integration(),
++    astroRuntimeConfig(),
   ],
 });
 ```
-
-### Configuration
-
-TODO:configuration
 
 ## Contributing
 
@@ -79,8 +75,4 @@ You can now edit files in `package`. Please note that making changes to those fi
 
 ## Licensing
 
-[MIT Licensed](https://github.com/TODO:/blob/main/LICENSE). Made with ❤️ by [TODO:](https://github.com/TODO:).
-
-## Acknowledgements
-
-TODO:
+[MIT Licensed](https://github.com/astro-runtime-config/blob/main/LICENSE). Made with ❤️ by [Dovias](https://github.com/Dovias).
