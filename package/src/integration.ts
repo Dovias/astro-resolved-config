@@ -41,6 +41,7 @@ export const forwardedAstroConfig = getForwardedAstroConfig();
 export default forwardedAstroConfig;`;
 								} else if (id === `\x00${deserializedVirtualModuleName}`) {
 									return `export const deserializedAstroConfig = ${serializeAstroConfig(getForwardedAstroConfig()!)};
+
 export default deserializedAstroConfig;`;
 								}
 								return null;
