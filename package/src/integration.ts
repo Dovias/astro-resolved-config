@@ -1,54 +1,67 @@
-import type { AstroConfig } from "astro";
 import { addVitePlugin, defineIntegration } from "astro-integration-kit";
+import { serializeAstroConfig } from "./serialization.ts";
+import { forwardAstroConfig, getForwardedAstroConfig } from "./forwarding.ts";
 
-const NAME = "astro-runtime-config";
-const VIRTUAL_MODULE_NAME = `${NAME}:config`;
-const RESOLVED_VIRTUAL_MODULE_NAME = `\x00${VIRTUAL_MODULE_NAME}`;
-const RESOLVED_CONFIG_SYMBOL_KEY = `${VIRTUAL_MODULE_NAME}/config`;
+const rootModuleName = "astro-runtime-config";
+const forwardedVirtualModuleName = `${rootModuleName}:forwarded`;
+const deserializedVirtualModuleName = `${rootModuleName}:deserialized`;
 
 export const integration = defineIntegration({
-  name: NAME,
-  setup() {
-    return {
-      hooks: {
-        "astro:config:setup": (options) => {
-          addVitePlugin(options, {
-            plugin: {
-              name: `vite-${NAME}`,
+	name: rootModuleName,
+	setup() {
+		return {
+			hooks: {
+				"astro:config:setup": (options) => {
+					addVitePlugin(options, {
+						plugin: {
+							name: `vite-${rootModuleName}`,
+							resolveId: (source) => {
+								return source === forwardedVirtualModuleName ||
+									source === deserializedVirtualModuleName
+										? `\x00${source}`
+										: null;
+							},
+							load: (id) => {
+								if (id === `\x00${forwardedVirtualModuleName}`) {
+									return `import { getForwardedAstroConfig } from "${rootModuleName}";
 
-              resolveId: (source) => {
-                return source === VIRTUAL_MODULE_NAME
-                  ? RESOLVED_VIRTUAL_MODULE_NAME
-                  : null;
-              },
+export const forwardedAstroConfig = getForwardedAstroConfig();
+export default forwardedAstroConfig;`;
+								} else if (id === `\x00${deserializedVirtualModuleName}`) {
+									return `export const deserializedAstroConfig = ${serializeAstroConfig(getForwardedAstroConfig()!)};
+export default deserializedAstroConfig;`;
+								}
+								return null;
+							}
+						},
+					});
+				},
+				"astro:config:done": ({ config, injectTypes }) => {
+					forwardAstroConfig(config);
 
-              load: (id) => {
-                return id === RESOLVED_VIRTUAL_MODULE_NAME
-                  ? `export const astroConfig = globalThis[Symbol.for("${RESOLVED_CONFIG_SYMBOL_KEY}")];
-  export default astroConfig;`
-                  : null;
-              },
-            },
-          });
-        },
-        "astro:config:done": ({ injectTypes, config }) => {
-          injectTypes({
-            filename: "types.d.ts",
-            content: `declare module "${VIRTUAL_MODULE_NAME}" {
-	import { AstroConfig } from "astro";
+					injectTypes({
+						filename: "forwarded.d.ts",
+						content: `declare module "${forwardedVirtualModuleName}" {
+	import type { ForwardedAstroConfig } from "${rootModuleName}";
 
-	export const astroConfig: AstroConfig;
-	export default astroConfig;
+	export type { ForwardedAstroConfig };
+	export const forwardedAstroConfig: ForwardedAstroConfig<"${config.output}">;
+	export default forwardedAstroConfig;
+}`
+					});
+
+					injectTypes({
+						filename: "deserialized.d.ts",
+						content: `declare module "${deserializedVirtualModuleName}" {
+	import type { DeserializedAstroConfig } from "${rootModuleName}";
+
+	export type { DeserializedAstroConfig };
+	export const deserializedAstroConfig: DeserializedAstroConfig;
+	export default deserializedAstroConfig;
 }`,
-          });
-
-          (
-            globalThis as typeof globalThis & {
-              [key: symbol]: AstroConfig;
-            }
-          )[Symbol.for(RESOLVED_CONFIG_SYMBOL_KEY)] = config;
-        },
-      },
-    };
-  },
+					});
+				}
+			}
+		};
+	}
 });

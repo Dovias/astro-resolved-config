@@ -1,7 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
 
-import { astroConfig } from "astro-runtime-config:config";
+import forwardedAstroConfig from "astro-runtime-config:forwarded";
+import { deserializedAstroConfig } from "astro-runtime-config:deserialized";
 ---
 
 <Layout title="astro-runtime-config">
@@ -34,9 +35,17 @@ import { astroConfig } from "astro-runtime-config:config";
 				</linearGradient>
 			</defs>
 		</svg>
-		<h1><span class="text-gradient">Astro configuration (JSON):</span></h1>
+		<h1><span class="text-gradient">Astro forwarded configuration (JSON):</span></h1>
 		<p class="configuration">
-			{`${JSON.stringify(astroConfig, null, 4)}`}
+			{`${JSON.stringify(forwardedAstroConfig, (_, value) => {
+				return typeof value === "function" ? value.toString() : value; 	
+			}, 4)}`}
+		</p>
+		<h1><span class="text-gradient">Astro deserialized configuration (JSON):</span></h1>
+		<p class="configuration">
+			{`${JSON.stringify(deserializedAstroConfig, (_, value) => {
+				return typeof value === "function" ? value.toString() : value; 	
+			}, 4)}`}
 		</p>
 	</main>
 </Layout>
@@ -80,6 +89,7 @@ import { astroConfig } from "astro-runtime-config:config";
 		padding: 1.5rem;
 		border-radius: 8px;
 		white-space: pre;
+		overflow: auto;
 	}
 
 	.link-card-grid {
