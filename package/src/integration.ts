@@ -1,6 +1,9 @@
+import type { AstroConfig } from "astro";
+
 import { addVitePlugin, defineIntegration } from "astro-integration-kit";
 import { serializeAstroConfig } from "./serialization.ts";
 import { forwardAstroConfig, getForwardedAstroConfig } from "./forwarding.ts";
+import { z } from "astro/zod";
 
 const rootModuleName = "astro-runtime-config";
 const forwardedVirtualModuleName = `${rootModuleName}:forwarded`;
@@ -8,11 +11,20 @@ const deserializedVirtualModuleName = `${rootModuleName}:deserialized`;
 
 export const integration = defineIntegration({
 	name: rootModuleName,
-	setup() {
+	optionsSchema: z.object({
+		forward: z.custom<AstroConfig>(_ => true).optional()
+	}).optional(),
+	setup({ options }) {
 		return {
 			hooks: {
-				"astro:config:setup": (options) => {
-					addVitePlugin(options, {
+				"astro:config:setup": (params) => {
+					if (options) {
+						const { forward } = options;
+						if (forward) {
+							forwardAstroConfig(forward);
+						}
+					}
+					addVitePlugin(params, {
 						plugin: {
 							name: `vite-${rootModuleName}`,
 							resolveId: (source) => {
@@ -37,7 +49,9 @@ export default deserializedAstroConfig;`;
 					});
 				},
 				"astro:config:done": ({ config, injectTypes }) => {
-					forwardAstroConfig(config);
+					if (!getForwardedAstroConfig()) {
+						forwardAstroConfig(config);
+					}
 
 					injectTypes({
 						filename: "forwarded.d.ts",
