@@ -13,9 +13,10 @@
 - **Custom configuration object forwarding.** You can now forward your own custom Astro configuration objects from integration configuration object:
   ```ts
   integrations: [
-  astroRuntimeConfig({
-    forward: customAstroConfig
-  }
+   astroRuntimeConfig({
+     forward: customAstroConfig
+   })
+  ]
   ```
   In this case `customAstroConfig` of type `AstroConfig` will be accessible through `astro-runtime-config:forwarded` and `astro-runtime-config:deserialized` virtual modules.
   
