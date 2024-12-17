@@ -11,8 +11,8 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^4.14",
-    "astro-integration-kit": "^0.16.1",
+    "astro": "^4.14 || ^5.0.0",
+    "astro-integration-kit": "^0.18.0",
     "astro-runtime-config": "workspace:*"
   },
   "devDependencies": {
