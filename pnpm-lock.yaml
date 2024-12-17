@@ -18,11 +18,11 @@ importers:
   package:
     dependencies:
       astro:
-        specifier: ^4.14
+        specifier: ^4.14 || ^5.0.0
         version: 4.15.8(@types/node@20.16.5)(rollup@4.22.4)(typescript@5.6.2)
       astro-integration-kit:
-        specifier: ^0.16.1
-        version: 0.16.1(astro@4.15.8(@types/node@20.16.5)(rollup@4.22.4)(typescript@5.6.2))
+        specifier: ^0.18.0
+        version: 0.18.0(astro@4.15.8(@types/node@20.16.5)(rollup@4.22.4)(typescript@5.6.2))
     devDependencies:
       tsup:
         specifier: ^8.3.0
@@ -31,11 +31,11 @@ importers:
   playground:
     dependencies:
       astro:
-        specifier: ^4.14
+        specifier: ^4.14 || ^5.0.0
         version: 4.15.8(@types/node@20.16.5)(rollup@4.22.4)(typescript@5.6.2)
       astro-integration-kit:
-        specifier: ^0.16.1
-        version: 0.16.1(astro@4.15.8(@types/node@20.16.5)(rollup@4.22.4)(typescript@5.6.2))
+        specifier: ^0.18.0
+        version: 0.18.0(astro@4.15.8(@types/node@20.16.5)(rollup@4.22.4)(typescript@5.6.2))
       astro-runtime-config:
         specifier: workspace:*
         version: link:../package
@@ -999,10 +999,10 @@ packages:
     resolution: {integrity: sha512-6t10qk83GOG8p0vKmaCr8eiilZwO171AvbROMtvvNiwrTly62t+7XkA8RdIIVbpMhCASAsxgAzdRSwh6nw/5Dg==}
     engines: {node: '>=4'}
 
-  astro-integration-kit@0.16.1:
-    resolution: {integrity: sha512-N/iam0PAFrRT9azYZqscP1HowQhC77Dwlp912P0/72k+kwUVgO3m73F26XXukHYoZBsrHgrUrfsWBxuCH3kEUg==}
+  astro-integration-kit@0.18.0:
+    resolution: {integrity: sha512-Z0QW5IQjosuKQDEGYYkvUX6EhEtrmE4/oViqWz23QveV8U7AuyFsTdg00WRNPevWZl/5a4lLUeDpv4bCRynRRg==}
     peerDependencies:
-      astro: ^4.12.0
+      astro: ^4.12.0 || ^5.0.0
 
   astro@4.15.8:
     resolution: {integrity: sha512-pdXjtRF6O1xChiPAUF32R7oVRTW7AK1/Oy/JqPNhLfbelO0l6C7cLdSEuSLektwOEnMhOVXqccetjBs7HPaoxA==}
@@ -3564,7 +3564,7 @@ snapshots:
     dependencies:
       tslib: 2.7.0
 
-  astro-integration-kit@0.16.1(astro@4.15.8(@types/node@20.16.5)(rollup@4.22.4)(typescript@5.6.2)):
+  astro-integration-kit@0.18.0(astro@4.15.8(@types/node@20.16.5)(rollup@4.22.4)(typescript@5.6.2)):
     dependencies:
       astro: 4.15.8(@types/node@20.16.5)(rollup@4.22.4)(typescript@5.6.2)
       pathe: 1.1.2
