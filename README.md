@@ -1,4 +1,6 @@
 # astro-runtime-config
+## ⚠️ Obsolete! Astro 5.2 introduces `astro:config` module that does this natively. Do not use in production!
+
 
 Astro integration that allows to retrieve astro configuration object at runtime.
 
